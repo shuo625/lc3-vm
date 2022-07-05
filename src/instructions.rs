@@ -34,4 +34,11 @@ impl Instruction {
             _ => None,
         }
     }
+
+    pub fn exec(&self, regs: &mut [u16]) {
+        match self {
+            Instruction::ADD(add) => add.exec(regs),
+            _ => {}
+        }
+    }
 }

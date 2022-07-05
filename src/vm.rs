@@ -1,6 +1,7 @@
 use std::fs::File;
 
 use crate::{
+    instructions::Instruction,
     memory::Memory,
     reg::{Reg, REG_NUM},
 };
@@ -24,7 +25,13 @@ impl VM {
 
     pub fn load(&mut self, file: File) {}
 
-    pub fn exec(&self) -> Result<(), VMErr> {
-        todo!()
+    pub fn exec(&mut self) -> Result<(), VMErr> {
+        loop {
+            let instruction_code = self.memory.read(self.regs[Reg::PC]);
+            match Instruction::new(instruction_code) {
+                Some(instruction) => instruction.exec(&mut self.regs),
+                None => return Err(VMErr::INVALIDOP),
+            }
+        }
     }
 }

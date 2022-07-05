@@ -1,4 +1,7 @@
-pub(self) mod op;
+pub(self) mod bits16;
+pub(self) mod instructions;
+pub(self) mod memory;
 pub(self) mod reg;
-pub(self) mod utils;
-pub mod vm;
+mod vm;
+
+pub use vm::{VMErr, VM};
