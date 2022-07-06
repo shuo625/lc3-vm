@@ -10,4 +10,6 @@ impl BR {
             pcoffset: instruction.bits(0, 8).unwrap(),
         }
     }
+
+    pub fn exec(&self) {}
 }

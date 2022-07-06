@@ -19,7 +19,7 @@ impl ADD {
             dr: instruction.bits(9, 11).unwrap() as usize,
             sr1: instruction.bits(6, 8).unwrap() as usize,
             sr2: instruction.bits(0, 2).unwrap() as usize,
-            imm: instruction.bits(0, 4).unwrap(),
+            imm: Bits16::sign_entend(instruction.bits(0, 4).unwrap(), 5),
             mode: if instruction.bit(5).unwrap() == 0 {
                 AddMode::RegisterMode
             } else {
