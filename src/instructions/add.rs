@@ -1,8 +1,8 @@
 use crate::{bits16::Bits16, reg::Reg};
 
 enum AddMode {
-    RegisterMode,
-    ImmediateMode,
+    RegMode,
+    ImmMode,
 }
 
 pub struct ADD {
@@ -21,17 +21,17 @@ impl ADD {
             sr2: instruction.bits(0, 2).unwrap() as usize,
             imm: Bits16::sign_entend(instruction.bits(0, 4).unwrap(), 5),
             mode: if instruction.bit(5).unwrap() == 0 {
-                AddMode::RegisterMode
+                AddMode::RegMode
             } else {
-                AddMode::ImmediateMode
+                AddMode::ImmMode
             },
         }
     }
 
     pub fn exec(&self, regs: &mut Reg) {
         match self.mode {
-            AddMode::ImmediateMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + self.imm,
-            AddMode::RegisterMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + regs.Rx[self.sr2],
+            AddMode::ImmMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + self.imm,
+            AddMode::RegMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + regs.Rx[self.sr2],
         };
 
         regs.update_flag(regs.Rx[self.dr]);
