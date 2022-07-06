@@ -1,9 +1,9 @@
 pub const GEN_REG_NUM: usize = 10;
 
 pub enum CondFlag {
-    POS = 1,
-    ZRO = 0,
-    NEG = -1,
+    P,
+    Z,
+    N,
 }
 
 pub struct Reg {
@@ -17,17 +17,17 @@ impl Reg {
         Reg {
             Rx: [0; GEN_REG_NUM],
             PC: 0,
-            COND: CondFlag::ZRO,
+            COND: CondFlag::Z,
         }
     }
 
     pub fn update_flag(&mut self, x: u16) {
         self.COND = if x == 0 {
-            CondFlag::ZRO
+            CondFlag::Z
         } else if (x >> 15) == 1 {
-            CondFlag::NEG
+            CondFlag::N
         } else {
-            CondFlag::POS
+            CondFlag::P
         }
     }
 }
