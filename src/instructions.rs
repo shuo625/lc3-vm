@@ -1,4 +1,5 @@
 mod add;
+mod and;
 mod br;
 mod ld;
 mod ldi;
@@ -28,7 +29,7 @@ pub enum Instruction {
     LD,            // load
     ST,            // store
     JSR,           // jump register
-    AND,           // bit and
+    AND(and::AND), // bit and
     LDR,           // load register
     STR,           // store register
     RTI,           // unused
@@ -49,6 +50,7 @@ impl Instruction {
         match op_code {
             OP_BR => Some(Instruction::BR(br::BR::new(instruction))),
             OP_ADD => Some(Instruction::ADD(add::ADD::new(instruction))),
+            OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
             _ => None,
         }
@@ -58,6 +60,7 @@ impl Instruction {
         match self {
             Instruction::BR(br) => br.exec(),
             Instruction::ADD(add) => add.exec(regs),
+            Instruction::AND(and) => and.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
             _ => {}
         }
