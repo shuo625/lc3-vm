@@ -1,8 +1,9 @@
 mod add;
 mod br;
 mod ld;
+mod ldi;
 
-use crate::{bits16::Bits16, reg::Reg};
+use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
 pub enum Instruction {
     BR(br::BR),    // branch
@@ -35,7 +36,7 @@ impl Instruction {
         }
     }
 
-    pub fn exec(&self, regs: &mut Reg) {
+    pub fn exec(&self, regs: &mut Reg, memory: &mut Memory) {
         match self {
             Instruction::ADD(add) => add.exec(regs),
             _ => {}

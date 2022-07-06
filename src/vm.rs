@@ -25,7 +25,7 @@ impl VM {
         loop {
             let instruction_code = self.memory.read(self.regs.PC as usize);
             match Instruction::new(instruction_code) {
-                Some(instruction) => instruction.exec(&mut self.regs),
+                Some(instruction) => instruction.exec(&mut self.regs, &mut self.memory),
                 None => return Err(VMErr::INVALIDOP),
             }
         }
