@@ -1,6 +1,7 @@
 mod add;
 mod and;
 mod br;
+mod jmp;
 mod ld;
 mod ldi;
 
@@ -36,7 +37,7 @@ pub enum Instruction {
     NOT,           // bit not
     LDI(ldi::LDI), // load indirect
     STI,           // store indirect
-    JMP,           // jump
+    JMP(jmp::JMP), // call and ret
     RES,           // reserved unused
     LEA,           // load effective address
     TRAP,          // execute trap
@@ -52,6 +53,7 @@ impl Instruction {
             OP_ADD => Some(Instruction::ADD(add::ADD::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
+            OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
             _ => None,
         }
     }
@@ -62,6 +64,7 @@ impl Instruction {
             Instruction::ADD(add) => add.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
+            Instruction::JMP(jmp) => jmp.exec(regs),
             _ => {}
         }
     }
