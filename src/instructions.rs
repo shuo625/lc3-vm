@@ -58,7 +58,7 @@ impl Instruction {
 
     pub fn exec(&self, regs: &mut Reg, memory: &mut Memory) {
         match self {
-            Instruction::BR(br) => br.exec(),
+            Instruction::BR(br) => br.exec(regs),
             Instruction::ADD(add) => add.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
