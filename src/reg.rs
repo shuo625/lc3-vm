@@ -1,4 +1,4 @@
-pub const REG_NUM: usize = 10;
+pub const GEN_REG_NUM: usize = 10;
 
 pub enum CondFlag {
     POS = 1,
@@ -6,15 +6,18 @@ pub enum CondFlag {
     NEG = -1,
 }
 
-pub enum Reg {
-    R0,
-    R1,
-    R2,
-    R3,
-    R4,
-    R5,
-    R6,
-    R7,
-    PC,
-    COND,
+pub struct Reg {
+    pub Rx: [u16; GEN_REG_NUM],
+    pub PC: u16,
+    pub COND: CondFlag,
+}
+
+impl Reg {
+    pub fn new() -> Self {
+        Reg {
+            Rx: [0; GEN_REG_NUM],
+            PC: 0,
+            COND: CondFlag::ZRO,
+        }
+    }
 }

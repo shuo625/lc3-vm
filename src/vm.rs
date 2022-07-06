@@ -1,24 +1,20 @@
 use std::fs::File;
 
-use crate::{
-    instructions::Instruction,
-    memory::Memory,
-    reg::{Reg, REG_NUM},
-};
+use crate::{instructions::Instruction, memory::Memory, reg::Reg};
 
 pub enum VMErr {
     INVALIDOP,
 }
 
 pub struct VM {
-    regs: [u16; REG_NUM],
+    regs: Reg,
     memory: Memory,
 }
 
 impl VM {
     pub fn new() -> Self {
         VM {
-            regs: [0; REG_NUM],
+            regs: Reg::new(),
             memory: Memory::new(),
         }
     }
@@ -27,7 +23,7 @@ impl VM {
 
     pub fn exec(&mut self) -> Result<(), VMErr> {
         loop {
-            let instruction_code = self.memory.read(self.regs[Reg::PC]);
+            let instruction_code = self.memory.read(self.regs.PC as usize);
             match Instruction::new(instruction_code) {
                 Some(instruction) => instruction.exec(&mut self.regs),
                 None => return Err(VMErr::INVALIDOP),

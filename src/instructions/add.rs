@@ -1,4 +1,4 @@
-use crate::bits16::Bits16;
+use crate::{bits16::Bits16, reg::Reg};
 
 enum AddMode {
     RegisterMode,
@@ -28,10 +28,10 @@ impl ADD {
         }
     }
 
-    pub fn exec(&self, regs: &mut [u16]) {
+    pub fn exec(&self, regs: &mut Reg) {
         match self.mode {
-            AddMode::ImmediateMode => regs[self.dr as usize] = regs[self.sr1] + self.imm,
-            AddMode::RegisterMode => regs[self.dr] = regs[self.sr1] + regs[self.sr2],
+            AddMode::ImmediateMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + self.imm,
+            AddMode::RegisterMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + regs.Rx[self.sr2],
         };
     }
 }
