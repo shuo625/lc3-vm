@@ -33,5 +33,7 @@ impl ADD {
             AddMode::ImmediateMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + self.imm,
             AddMode::RegisterMode => regs.Rx[self.dr] = regs.Rx[self.sr1] + regs.Rx[self.sr2],
         };
+
+        regs.update_flag(regs.Rx[self.dr]);
     }
 }

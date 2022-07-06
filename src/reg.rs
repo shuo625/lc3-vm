@@ -20,4 +20,14 @@ impl Reg {
             COND: CondFlag::ZRO,
         }
     }
+
+    pub fn update_flag(&mut self, x: u16) {
+        self.COND = if x == 0 {
+            CondFlag::ZRO
+        } else if (x >> 15) == 1 {
+            CondFlag::NEG
+        } else {
+            CondFlag::POS
+        }
+    }
 }
