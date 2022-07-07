@@ -5,6 +5,7 @@ mod jmp;
 mod jsr;
 mod ld;
 mod ldi;
+mod ldr;
 
 use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
@@ -32,7 +33,7 @@ pub enum Instruction {
     ST,            // store
     JSR(jsr::JSR), // jump register
     AND(and::AND), // bit and
-    LDR,           // load register
+    LDR(ldr::LDR), // load register
     STR,           // store register
     RTI,           // unused
     NOT,           // bit not
@@ -55,6 +56,7 @@ impl Instruction {
             OP_LD => Some(Instruction::LD(ld::LD::new(instruction))),
             OP_JSR => Some(Instruction::JSR(jsr::JSR::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
+            OP_LDR => Some(Instruction::LDR(ldr::LDR::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
             OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
             _ => None,
@@ -68,6 +70,7 @@ impl Instruction {
             Instruction::LD(ld) => ld.exec(regs, memory),
             Instruction::JSR(jsr) => jsr.exec(regs),
             Instruction::AND(and) => and.exec(regs),
+            Instruction::LDR(ldr) => ldr.exec(regs, memory),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
             Instruction::JMP(jmp) => jmp.exec(regs),
             _ => {}
