@@ -14,4 +14,8 @@ impl Memory {
     pub fn read(&self, address: usize) -> u16 {
         self.mem[address]
     }
+
+    pub fn write(&mut self, address: usize, value: u16) {
+        self.mem[address] = value;
+    }
 }
