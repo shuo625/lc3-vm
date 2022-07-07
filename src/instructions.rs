@@ -28,7 +28,7 @@ const OP_TRAP: u16 = 0b1111;
 pub enum Instruction {
     BR(br::BR),    // branch
     ADD(add::ADD), // add
-    LD,            // load
+    LD(ld::LD),    // load
     ST,            // store
     JSR(jsr::JSR), // jump register
     AND(and::AND), // bit and
@@ -52,6 +52,7 @@ impl Instruction {
         match op_code {
             OP_BR => Some(Instruction::BR(br::BR::new(instruction))),
             OP_ADD => Some(Instruction::ADD(add::ADD::new(instruction))),
+            OP_LD => Some(Instruction::LD(ld::LD::new(instruction))),
             OP_JSR => Some(Instruction::JSR(jsr::JSR::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
@@ -64,6 +65,7 @@ impl Instruction {
         match self {
             Instruction::BR(br) => br.exec(regs),
             Instruction::ADD(add) => add.exec(regs),
+            Instruction::LD(ld) => ld.exec(regs, memory),
             Instruction::JSR(jsr) => jsr.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
