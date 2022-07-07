@@ -8,6 +8,7 @@ mod ldi;
 mod ldr;
 mod lea;
 mod not;
+mod st;
 
 use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
@@ -32,7 +33,7 @@ pub enum Instruction {
     BR(br::BR),    // branch
     ADD(add::ADD), // add
     LD(ld::LD),    // load
-    ST,            // store
+    ST(st::ST),    // store
     JSR(jsr::JSR), // jump register
     AND(and::AND), // bit and
     LDR(ldr::LDR), // load register
@@ -56,6 +57,7 @@ impl Instruction {
             OP_BR => Some(Instruction::BR(br::BR::new(instruction))),
             OP_ADD => Some(Instruction::ADD(add::ADD::new(instruction))),
             OP_LD => Some(Instruction::LD(ld::LD::new(instruction))),
+            OP_ST => Some(Instruction::ST(st::ST::new(instruction))),
             OP_JSR => Some(Instruction::JSR(jsr::JSR::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDR => Some(Instruction::LDR(ldr::LDR::new(instruction))),
@@ -72,6 +74,7 @@ impl Instruction {
             Instruction::BR(br) => br.exec(regs),
             Instruction::ADD(add) => add.exec(regs),
             Instruction::LD(ld) => ld.exec(regs, memory),
+            Instruction::ST(st) => st.exec(regs, memory),
             Instruction::JSR(jsr) => jsr.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDR(ldr) => ldr.exec(regs, memory),
