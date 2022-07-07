@@ -9,6 +9,7 @@ mod ldr;
 mod lea;
 mod not;
 mod st;
+mod sti;
 
 use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
@@ -41,7 +42,7 @@ pub enum Instruction {
     RTI,           // unused
     NOT(not::NOT), // bit not
     LDI(ldi::LDI), // load indirect
-    STI,           // store indirect
+    STI(sti::STI), // store indirect
     JMP(jmp::JMP), // call and ret
     RES,           // reserved unused
     LEA(lea::LEA), // load effective address
@@ -63,6 +64,7 @@ impl Instruction {
             OP_LDR => Some(Instruction::LDR(ldr::LDR::new(instruction))),
             OP_NOT => Some(Instruction::NOT(not::NOT::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
+            OP_STI => Some(Instruction::STI(sti::STI::new(instruction))),
             OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
             OP_LEA => Some(Instruction::LEA(lea::LEA::new(instruction))),
             _ => None,
@@ -80,6 +82,7 @@ impl Instruction {
             Instruction::LDR(ldr) => ldr.exec(regs, memory),
             Instruction::NOT(not) => not.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
+            Instruction::STI(sti) => sti.exec(regs, memory),
             Instruction::JMP(jmp) => jmp.exec(regs),
             Instruction::LEA(lea) => lea.exec(regs),
             _ => {}
