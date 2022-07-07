@@ -43,14 +43,16 @@ pub enum Instruction {
     AND(and::AND), // bit and
     LDR(ldr::LDR), // load register
     STR(str::STR), // store register
-    RTI,           // unused
+    #[allow(dead_code)]
+    RTI, // unused
     NOT(not::NOT), // bit not
     LDI(ldi::LDI), // load indirect
     STI(sti::STI), // store indirect
     JMP(jmp::JMP), // call and ret
-    RES,           // reserved unused
+    #[allow(dead_code)]
+    RES, // reserved unused
     LEA(lea::LEA), // load effective address
-    TRAP,          // execute trap
+    TRAP(trap::TRAP), // execute trap
 }
 
 impl Instruction {
@@ -72,6 +74,7 @@ impl Instruction {
             OP_STI => Some(Instruction::STI(sti::STI::new(instruction))),
             OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
             OP_LEA => Some(Instruction::LEA(lea::LEA::new(instruction))),
+            OP_TRAP => Some(Instruction::TRAP(trap::TRAP::new(instruction))),
             _ => None,
         }
     }
@@ -91,6 +94,7 @@ impl Instruction {
             Instruction::STI(sti) => sti.exec(regs, memory),
             Instruction::JMP(jmp) => jmp.exec(regs),
             Instruction::LEA(lea) => lea.exec(regs),
+            Instruction::TRAP(trap) => trap.exec(regs, memory),
             _ => {}
         }
     }
