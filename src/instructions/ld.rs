@@ -13,7 +13,7 @@ impl LD {
         }
     }
 
-    pub fn exec(&self, regs: &mut Reg, memory: &mut Memory) {
+    pub fn exec(&self, regs: &mut Reg, memory: &Memory) {
         regs.Rx[self.dr] = memory.read((regs.PC + self.pcoffset) as usize);
         regs.update_flag(regs.Rx[self.dr]);
     }

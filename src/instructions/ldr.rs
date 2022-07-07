@@ -15,7 +15,7 @@ impl LDR {
         }
     }
 
-    pub fn exec(&self, regs: &mut Reg, memory: &mut Memory) {
+    pub fn exec(&self, regs: &mut Reg, memory: &Memory) {
         regs.Rx[self.dr] = memory.read(self.baser + self.offset);
         regs.update_flag(regs.Rx[self.dr]);
     }
