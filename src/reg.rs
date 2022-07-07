@@ -1,4 +1,4 @@
-pub const GEN_REG_NUM: usize = 10;
+pub const GEN_REG_NUM: usize = 8;
 
 pub enum CondFlag {
     P,
