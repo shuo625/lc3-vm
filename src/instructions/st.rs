@@ -14,6 +14,6 @@ impl ST {
     }
 
     pub fn exec(&self, regs: &Reg, memory: &mut Memory) {
-        memory.write((regs.PC + self.pcoffset) as usize, regs.Rx[self.sr]);
+        memory.write(regs.PC + self.pcoffset, regs.Rx[self.sr]);
     }
 }

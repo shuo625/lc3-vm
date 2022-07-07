@@ -23,7 +23,7 @@ impl VM {
 
     pub fn exec(&mut self) -> Result<(), VMErr> {
         loop {
-            let instruction_code = self.memory.read(self.regs.PC as usize);
+            let instruction_code = self.memory.read(self.regs.PC);
             match Instruction::new(instruction_code) {
                 Some(instruction) => instruction.exec(&mut self.regs, &mut self.memory),
                 None => return Err(VMErr::INVALIDOP),
