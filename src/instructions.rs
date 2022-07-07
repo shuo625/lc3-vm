@@ -10,6 +10,8 @@ mod lea;
 mod not;
 mod st;
 mod sti;
+mod str;
+mod trap;
 
 use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
@@ -21,11 +23,13 @@ const OP_JSR: u16 = 0b0100;
 const OP_AND: u16 = 0b0101;
 const OP_LDR: u16 = 0b0110;
 const OP_STR: u16 = 0b0111;
+#[allow(unused)]
 const OP_RTI: u16 = 0b1000;
 const OP_NOT: u16 = 0b1001;
 const OP_LDI: u16 = 0b1010;
 const OP_STI: u16 = 0b1011;
 const OP_JMP: u16 = 0b1100;
+#[allow(unused)]
 const OP_RES: u16 = 0b1101;
 const OP_LEA: u16 = 0b1110;
 const OP_TRAP: u16 = 0b1111;
@@ -38,7 +42,7 @@ pub enum Instruction {
     JSR(jsr::JSR), // jump register
     AND(and::AND), // bit and
     LDR(ldr::LDR), // load register
-    STR,           // store register
+    STR(str::STR), // store register
     RTI,           // unused
     NOT(not::NOT), // bit not
     LDI(ldi::LDI), // load indirect
@@ -62,6 +66,7 @@ impl Instruction {
             OP_JSR => Some(Instruction::JSR(jsr::JSR::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDR => Some(Instruction::LDR(ldr::LDR::new(instruction))),
+            OP_STR => Some(Instruction::STR(str::STR::new(instruction))),
             OP_NOT => Some(Instruction::NOT(not::NOT::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
             OP_STI => Some(Instruction::STI(sti::STI::new(instruction))),
@@ -80,6 +85,7 @@ impl Instruction {
             Instruction::JSR(jsr) => jsr.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDR(ldr) => ldr.exec(regs, memory),
+            Instruction::STR(str) => str.exec(regs, memory),
             Instruction::NOT(not) => not.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
             Instruction::STI(sti) => sti.exec(regs, memory),
