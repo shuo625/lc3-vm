@@ -2,6 +2,7 @@ mod add;
 mod and;
 mod br;
 mod jmp;
+mod jsr;
 mod ld;
 mod ldi;
 
@@ -29,7 +30,7 @@ pub enum Instruction {
     ADD(add::ADD), // add
     LD,            // load
     ST,            // store
-    JSR,           // jump register
+    JSR(jsr::JSR), // jump register
     AND(and::AND), // bit and
     LDR,           // load register
     STR,           // store register
@@ -51,6 +52,7 @@ impl Instruction {
         match op_code {
             OP_BR => Some(Instruction::BR(br::BR::new(instruction))),
             OP_ADD => Some(Instruction::ADD(add::ADD::new(instruction))),
+            OP_JSR => Some(Instruction::JSR(jsr::JSR::new(instruction))),
             OP_AND => Some(Instruction::AND(and::AND::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
             OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
@@ -62,6 +64,7 @@ impl Instruction {
         match self {
             Instruction::BR(br) => br.exec(regs),
             Instruction::ADD(add) => add.exec(regs),
+            Instruction::JSR(jsr) => jsr.exec(regs),
             Instruction::AND(and) => and.exec(regs),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
             Instruction::JMP(jmp) => jmp.exec(regs),
