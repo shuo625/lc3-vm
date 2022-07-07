@@ -6,6 +6,7 @@ mod jsr;
 mod ld;
 mod ldi;
 mod ldr;
+mod lea;
 
 use crate::{bits16::Bits16, memory::Memory, reg::Reg};
 
@@ -41,7 +42,7 @@ pub enum Instruction {
     STI,           // store indirect
     JMP(jmp::JMP), // call and ret
     RES,           // reserved unused
-    LEA,           // load effective address
+    LEA(lea::LEA), // load effective address
     TRAP,          // execute trap
 }
 
@@ -59,6 +60,7 @@ impl Instruction {
             OP_LDR => Some(Instruction::LDR(ldr::LDR::new(instruction))),
             OP_LDI => Some(Instruction::LDI(ldi::LDI::new(instruction))),
             OP_JMP => Some(Instruction::JMP(jmp::JMP::new(instruction))),
+            OP_LEA => Some(Instruction::LEA(lea::LEA::new(instruction))),
             _ => None,
         }
     }
@@ -73,6 +75,7 @@ impl Instruction {
             Instruction::LDR(ldr) => ldr.exec(regs, memory),
             Instruction::LDI(ldi) => ldi.exec(regs, memory),
             Instruction::JMP(jmp) => jmp.exec(regs),
+            Instruction::LEA(lea) => lea.exec(regs),
             _ => {}
         }
     }
