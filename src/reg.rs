@@ -6,6 +6,7 @@ pub enum CondFlag {
     N,
 }
 
+#[allow(non_snake_case)]
 pub struct Reg {
     pub Rx: [u16; GEN_REG_NUM],
     pub PC: u16,
