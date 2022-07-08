@@ -1,10 +1,6 @@
-use std::{fs::File, io::Read};
+use std::fs;
 
-use crate::{
-    instructions::Instruction,
-    memory::{Memory, MEMORY_MAX},
-    reg::Reg,
-};
+use crate::{instructions::Instruction, memory::Memory, reg::Reg};
 
 pub enum VMErr {
     INVALIDOP,
@@ -16,30 +12,31 @@ pub struct VM {
 }
 
 impl VM {
-    pub fn new() -> Self {
-        VM {
+    pub fn new(filename: &str) -> Self {
+        let mut vm = VM {
             regs: Reg::new(),
             memory: Memory::new(),
-        }
+        };
+        vm.load(filename);
+        vm
     }
 
-    pub fn load(&mut self, file: File) {
-        let mut bytes = file.bytes();
-        let origin = VM::concat_to_u16(
-            bytes.next().unwrap().unwrap(),
-            bytes.next().unwrap().unwrap(),
-        );
+    fn load(&mut self, filename: &str) {
+        let content = fs::read_to_string(filename).unwrap();
+        let bytes = content.as_bytes();
+        let mut i: usize = 0;
+        let origin = VM::concat_to_u16(bytes[i], bytes[i + 1]);
         let mut mem_address = origin;
 
-        while (mem_address as usize) < MEMORY_MAX {
-            self.memory.write(
-                mem_address,
-                VM::concat_to_u16(
-                    bytes.next().unwrap().unwrap(),
-                    bytes.next().unwrap().unwrap(),
-                ),
-            );
+        i = 2;
+        loop {
+            if i >= bytes.len() {
+                break;
+            }
+            self.memory
+                .write(mem_address, VM::concat_to_u16(bytes[i], bytes[i + 1]));
             mem_address += 1;
+            i += 2;
         }
     }
 
